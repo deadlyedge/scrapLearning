@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Switch Store Discount!</title>
+    <script src="/eel.js" type="text/javascript"></script>
+    <link href="css/wstyle.css" rel="stylesheet">
+</head>
+
+<body class="scrollstyle" id="scrollstyle">
+<grid-container>
+    {% for game in gamelist %}
+    <grid-item>
+        <span><img src="{{game['picture']}}"></span>
+        <span>
+            <div class="name">{{game['name']}}</div>
+            <div class="info">
+                <span class="price">{{game['price']}}</span>
+                <span class="discount">{{game['discount']}}</span>
+                <span class="store">{{game['store']}}</span>
+            </div>
+        </span>
+    </grid-item>
+    {% endfor %}
+</grid-container>
+</body>
+</html>
