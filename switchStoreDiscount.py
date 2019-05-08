@@ -14,15 +14,19 @@ filename = os.path.join(templates_dir, 'index.html')
 
 baseURL = 'https://eshop-prices.com'
 subURL = '/games/on-sale?currency=CNY'
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
+}
 gamelist = []
-eel.init('web/')
+eel.init(templates_dir)
 
 
+# 提取可用的图片链接
 def findURL(urltext):
-    filter = 'cdn01.*?jpg'
+    filter1 = 'cdn01.*?jpg'
     filter2 = 'https%3A.*?jpg'
     try:
-        url = 'http://' + re.search(filter, urltext).group().replace('%2F', '/')
+        url = 'http://' + re.search(filter1, urltext).group().replace('%2F', '/')
     except AttributeError:
         try:
             url = re.search(filter2, urltext).group().replace('%2F', '/').replace('%3A', ':')
@@ -34,7 +38,7 @@ def findURL(urltext):
 def getGameList(baseURL, subURL):
     targetURL = baseURL + subURL
     print(targetURL)
-    page = pq(url=(baseURL + subURL))
+    page = pq(url=targetURL, headers=headers)
     all_div = page('div.games-list-item-content')
     japan_us_div = all_div(
         'img[title=Japan], img[title="United States"]').parents('a.games-list-item').items()
@@ -46,14 +50,17 @@ def getGameList(baseURL, subURL):
         gameprice = float(tab('span.price-tag').remove('del').text().replace('¥', '0'))
         gamediscount = format(gameprice / gameorigin, '.0%')
         store = tab('img').attr('title')
-        game = {
-            'name': gamename,
-            'picture': pictureURL,
-            'price': str(gameprice),
-            'discount': gamediscount,
-            'store': store
-        }
-        gamelist.append(game)
+        # 进行简单的筛选，优惠幅度大于100元或者50%才被记录
+        if gameorigin - gameprice >= 100 or gamediscount <= '50%':
+            game = {
+                'name': gamename,
+                'picture': pictureURL,
+                'price': str(gameprice),
+                'discount': gamediscount,
+                'store': store
+            }
+            gamelist.append(game)
+    # 如果还有页面继续调用
     nextURL = page('span.next a').attr('href')
     if nextURL:
         return getGameList(baseURL, nextURL)
