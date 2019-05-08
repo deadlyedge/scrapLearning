@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Switch Store Discount!</title>
+	<meta charset="UTF-8">
+	<title>Switch Store Discount</title>
+	<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
     <script src="/eel.js" type="text/javascript"></script>
-    <link href="css/wstyle.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
 </head>
 
 <body class="scrollstyle" id="scrollstyle">
-<grid-container>
+<div class="table">
+	<h3 class="table-subtitle">NINTENDO Switch eShop Discount</h3>
     {% for game in gamelist %}
-    <grid-item>
-        <span><img src="{{game['picture']}}"></span>
-        <span>
-            <div class="name">{{game['name']}}</div>
-            <div class="info">
-                <span class="price">{{game['price']}}</span>
-                <span class="discount">{{game['discount']}}</span>
-                <span class="store">{{game['store']}}</span>
-            </div>
-        </span>
-    </grid-item>
+
+	<div class="tabs">
+		<img src="{{game['picture']}}"/>
+		<h1 class="tabs_header">{{game['name']}}</h1>
+		<div class="tabs_pricing"><span>¥</span><span>{{game['price']}}</span><span class="discount">{{game['discount']}}</span>
+		</div>
+		<div class="tabs_getstart">{{game['store']}}</div>
+	</div>
     {% endfor %}
-</grid-container>
+
+</div>
 </body>
 </html>

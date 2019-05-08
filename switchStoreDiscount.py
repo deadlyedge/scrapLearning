@@ -49,7 +49,7 @@ def getGameList(baseURL, subURL):
         game = {
             'name': gamename,
             'picture': pictureURL,
-            'price': '¥' + str(gameprice),
+            'price': str(gameprice),
             'discount': gamediscount,
             'store': store
         }
@@ -66,4 +66,4 @@ if __name__ == '__main__':
     with open(filename, 'w', encoding='UTF-8') as fh:
         output = template.render(gamelist=gamelist)
         fh.write(output)
-    eel.start('index.html', size=(900, 800))
+    eel.start('index.html', size=(1000, 800))
